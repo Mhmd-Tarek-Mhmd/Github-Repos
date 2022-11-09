@@ -6,5 +6,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Github Repos</title>
   </head>
-  <body></body>
+  <body>
+    <main class="app">
+      <header class="app__header">
+        <h1>Github Repos</h1>
+      </header>
+
+      <div>
+        <form class="app__form">
+          <input
+            required
+            type="text"
+            class="app__form__input app__form__input--text"
+            aria-label="Enter Github username"
+            placeholder="Enter Github Username..."
+          />
+          <button
+            type="submit"
+            value="Get Repos"
+            class="app__form__input app__form__input--submit"
+          >
+            Get Repos
+          </button>
+        </form>
+
+        <div class="app__repos__wrapper" hidden></div>
+      </div>
+    </main>
+  </body>
 </html>
