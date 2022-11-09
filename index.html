@@ -158,5 +158,62 @@
         <div class="app__repos__wrapper" hidden></div>
       </div>
     </main>
+
+    <script>
+      // Helpers
+      const alertViews = (txt) => {
+        return `<p
+          role="alert"
+          class="app__alert"
+          aria-live="assertive"
+        >${txt}</p>`;
+      };
+      const repoViews = ({ name, stargazers_count: repoStars }, username) => {
+        const repoName = name.replaceAll("-", " ");
+
+        return `<article class="app__repo repo-box">
+          <h2 class="app__repo__name">${repoName}</h2>
+          <b
+            class="app__repo__stars"
+            aria-label="${repoName} repo has ${repoStars} stars"
+          >${repoStars}⭐</b>
+          <a
+            target="__blank"
+            class="app__repo__visit"
+            aria-label="Visit ${repoName} repo"
+            href="https://github.com/${username}/${name}"
+          >Visit</a>
+        </article>`;
+      };
+      const showRepos = (repos, username) => {
+        let children = "";
+        const wrapper = document.querySelector(".app__repos__wrapper");
+
+        if (repos.length) {
+          repos.forEach((repo) => (children += repoViews(repo, username)));
+        } else {
+          children = alertViews(
+            repos.message
+              ? "This username doesn't exist"
+              : "This username didn't initiate any repos yet"
+          );
+        }
+
+        wrapper.innerHTML = children;
+        wrapper.removeAttribute("hidden");
+      };
+
+      // Events Handler
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        const username = e.target.elements[0].value;
+        fetch(`https://api.github.com/users/${username}/repos`)
+          .then((res) => res.json())
+          .then((repos) => showRepos(repos, username));
+      };
+
+      // Events
+      document.querySelector(".app__form").onsubmit = handleSubmit;
+    </script>
   </body>
 </html>
